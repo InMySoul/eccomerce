@@ -7,9 +7,46 @@
  */
 
 namespace App\Admin;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\SonataAdminBundle;
+use Sonata\AdminBundle\Datagrid\ListMapper;
 
-
-class ProductAdmin
+class ProductAdmin extends  AbstractAdmin
 {
+    protected function configureListFields(ListMapper $list)
+    {
+        $list
+            ->addIdentifier('name')
+            ->add('description')
+            ->add('price')
+            ->add('count')
+            ->add('isTop')
+            ;
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $filter)
+    {
+        $filter
+            ->add('name')
+            ->add('description')
+            ->add('price')
+            ->add('count')
+            ->add('isTop')
+        ;
+    }
+
+    protected function configureFormFields(FormMapper $form)
+    {
+        $form
+            ->add('name')
+            ->add('description')
+            ->add('price')
+            ->add('count')
+            ->add('isTop')
+            ;
+    }
+
 
 }
