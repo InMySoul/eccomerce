@@ -37,17 +37,16 @@ class Product
     private $count;
 
     /**
-     * @ORM\Column(type="boolean", options={"default:false"})
+     * @ORM\Column(type="boolean", options={"default": false})
      */
     private $isTop;
 
-    public function __construct()
-    {
-        $this->isTop=false;
-    }
+	public function __construct()
+	{
+		$this->isTop = false;
+	}
 
-
-    public function getId(): ?int
+	public function getId(): ?int
     {
         return $this->id;
     }
