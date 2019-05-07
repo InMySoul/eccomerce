@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,15 +43,21 @@ class Product
      */
     private $isTop;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\OdrerItem", mappedBy="Product", orphanRemoval=true)
+     */
+    private $odrerItems;
+
 	public function __construct()
-	{
-		$this->isTop = false;
-	}
+                     	{
+                     		$this->isTop = false;
+                       $this->odrerItems = new ArrayCollection();
+                     	}
 
 	public function getId(): ?int
-    {
-        return $this->id;
-    }
+                         {
+                             return $this->id;
+                         }
 
     public function getName(): ?string
     {
@@ -107,6 +115,37 @@ class Product
     public function setIsTop(bool $isTop): self
     {
         $this->isTop = $isTop;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OdrerItem[]
+     */
+    public function getOdrerItems(): Collection
+    {
+        return $this->odrerItems;
+    }
+
+    public function addOdrerItem(OdrerItem $odrerItem): self
+    {
+        if (!$this->odrerItems->contains($odrerItem)) {
+            $this->odrerItems[] = $odrerItem;
+            $odrerItem->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOdrerItem(OdrerItem $odrerItem): self
+    {
+        if ($this->odrerItems->contains($odrerItem)) {
+            $this->odrerItems->removeElement($odrerItem);
+            // set the owning side to null (unless already changed)
+            if ($odrerItem->getProduct() === $this) {
+                $odrerItem->setProduct(null);
+            }
+        }
 
         return $this;
     }
