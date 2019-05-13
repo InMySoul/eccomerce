@@ -1,52 +1,53 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: skillup_student
- * Date: 26.04.19
- * Time: 20:40
- */
 
 namespace App\Admin;
+
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\SonataAdminBundle;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class ProductAdmin extends  AbstractAdmin
+class ProductAdmin extends AbstractAdmin
 {
-    protected function configureListFields(ListMapper $list)
-    {
-        $list
-            ->addIdentifier('name')
-            ->add('description')
-            ->add('price')
-            ->add('count')
-            ->add('isTop')
-            ;
-    }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
-    {
-        $filter
-            ->add('name')
-            ->add('description')
-            ->add('price')
-            ->add('count')
-            ->add('isTop')
-        ;
-    }
+	protected function configureListFields(ListMapper $list)
+	{
+		$list
+			->addIdentifier('name')
+			->add('categories')
+			->addIdentifier('description')
+			->add('price')
+			->add('count')
+			->add('isTop')
+		;
+	}
 
-    protected function configureFormFields(FormMapper $form)
-    {
-        $form
-            ->add('name')
-            ->add('description')
-            ->add('price')
-            ->add('count')
-            ->add('isTop')
-            ;
-    }
+	protected function configureDatagridFilters(DatagridMapper $filter)
+	{
+		$filter
+			->add('name')
+			->add('categories')
+			->add('description')
+			->add('price')
+			->add('count')
+			->add('isTop')
+		;
+	}
 
+	protected function configureFormFields(FormMapper $form)
+	{
+		$form
+			->add('name')
+			->add('categories')
+			->add('description')
+			->add('price')
+			->add('count')
+			->add('isTop')
+            ->add('image',VichImageType::class,[
+                'required' => false,
+        ])
+		;
+	}
 
 }

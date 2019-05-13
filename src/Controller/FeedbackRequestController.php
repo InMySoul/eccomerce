@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\FeedBackRequest;
-use App\Form\FeedBackRequestType;
+use App\Entity\FeedbackRequest;
+use App\Form\FeedbackRequestType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,30 +12,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class FeedbackRequestController extends AbstractController
 {
     /**
-     * @Route("/feedback/request", name="feed_back_request")
+     * @Route("/feedback/request", name="feedback_request")
      */
-    public function index(Request $request,EntityManagerInterface $entityManager)
+    public function index(Request $request, EntityManagerInterface $entityManager)
     {
-        $feedbackrequest = new FeedBackRequest();
-        $form = $this->createForm(FeedBackRequestType::class, $feedbackrequest);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
-        $entityManager->persist($feedbackrequest);
-        $entityManager->flush();
+    	$feedbackRequest = new FeedbackRequest();
+    	$form = $this->createForm(FeedbackRequestType::class, $feedbackRequest);
+    	$form->handleRequest($request);
 
-        return $this->redirectToRoute('feedback_request_succes');
-        }
+    	if ($form->isSubmitted() && $form->isValid()) {
+			$entityManager->persist($feedbackRequest);
+			$entityManager->flush();
+
+			return $this->redirectToRoute('feedback_request_success');
+		}
 
         return $this->render('feedback_request/index.html.twig', [
-            'form'=>$form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
-    /**
-     * @Route("/feedback/succes",name="feedback_request_succes")
-     */
-    public function  succes()
-    {
-        return $this->render('feedback_request/succes.html.twig');
-    }
+	/**
+	 * @Route("/feedback/success", name="feedback_request_success")
+	 */
+    public function success()
+	{
+		return $this->render('feedback_request/success.html.twig');
+	}
 }

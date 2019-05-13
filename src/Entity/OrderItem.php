@@ -5,9 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\OdrerItemRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\OrderItemRepository")
  */
-class OdrerItem
+class OrderItem
 {
     /**
      * @ORM\Id()
@@ -16,11 +16,19 @@ class OdrerItem
      */
     private $id;
 
+	/**
+	 * @var Order
+	 *
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Order", inversedBy="orderItems")
+	 * @ORM\JoinColumn(nullable=false)
+	 */
+    private $order;
+
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="odrerItems")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="orderItems")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $Product;
+    private $product;
 
     /**
      * @ORM\Column(type="integer")
@@ -44,12 +52,13 @@ class OdrerItem
 
     public function getProduct(): ?Product
     {
-        return $this->Product;
+        return $this->product;
     }
 
-    public function setProduct(?Product $Product): self
+    public function setProduct(?Product $product): self
     {
-        $this->Product = $Product;
+        $this->product = $product;
+        $this->setPrice($product->getPrice());
 
         return $this;
     }
@@ -62,6 +71,7 @@ class OdrerItem
     public function setCount(int $count): self
     {
         $this->count = $count;
+        $this->updateAmount();
 
         return $this;
     }
@@ -74,6 +84,7 @@ class OdrerItem
     public function setPrice(int $price): self
     {
         $this->price = $price;
+        $this->updateAmount();
 
         return $this;
     }
@@ -89,4 +100,26 @@ class OdrerItem
 
         return $this;
     }
+
+    public function getOrder(): ?Order
+    {
+        return $this->order;
+    }
+
+    public function setOrder(?Order $order): self
+    {
+        $this->order = $order;
+
+        return $this;
+    }
+
+    private function updateAmount()
+	{
+		$this->amount = $this->price * $this->count;
+
+		if ($this->order) {
+			$this->order->updateAmount();
+		}
+	}
+
 }
