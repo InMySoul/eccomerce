@@ -44,9 +44,9 @@ class ProductAdmin extends AbstractAdmin
 			->add('price')
 			->add('count')
 			->add('isTop')
-            ->add('image',VichImageType::class,[
-                'required' => false,
-        ])
+			->add('image', VichImageType::class, [
+				'required' => false,
+			])
 		;
 	}
 
